@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AKV — Reality Check AI</title>
+<style>
+:root{--bg:#070b14;--panel:#0e1525;--panel2:#121c30;--text:#f5f7fb;--muted:#91a0b8;--blue:#55b8ff;--green:#55e0a3;--orange:#ffb35a;--red:#ff6b7a;--line:#22304a}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 75% 10%,#123054 0,#070b14 42%);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
+.app{max-width:1200px;margin:auto;min-height:100vh;padding:24px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:12px 4px 28px}.logo{font-weight:900;font-size:25px;letter-spacing:2px;color:var(--blue)}.badge{font-size:12px;border:1px solid #29405f;border-radius:30px;padding:8px 13px;color:#b7c7dc;background:#0d1727}
+.hero{padding:55px 0 42px;max-width:850px}.eyebrow{color:var(--green);font-weight:800;letter-spacing:1.5px;font-size:13px}.hero h1{font-size:58px;line-height:1.02;margin:13px 0}.hero h1 span{color:var(--blue)}.hero p{font-size:18px;line-height:1.65;color:var(--muted);max-width:760px}
+.btn{border:0;border-radius:12px;padding:14px 21px;font-weight:800;cursor:pointer;font-size:15px;background:var(--blue);color:#04101d;box-shadow:0 10px 30px #55b8ff20}.btn.secondary{background:#16233a;color:#dce8f7;border:1px solid var(--line);box-shadow:none}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{background:linear-gradient(180deg,#111b2e,#0c1322);border:1px solid var(--line);border-radius:17px;padding:21px}.card h3{margin:0 0 9px}.card p{color:var(--muted);line-height:1.55;margin:0;font-size:14px}
+.screen{display:none}.screen.active{display:block}.topline{display:flex;justify-content:space-between;align-items:end;margin:10px 0 22px}.topline h2{margin:0;font-size:31px}.progress{height:7px;background:#172238;border-radius:10px;margin:12px 0 28px;overflow:hidden}.progress i{display:block;height:100%;background:var(--blue);width:16%;transition:.3s}
+.question{font-size:27px;font-weight:750;margin-bottom:20px}.options{display:grid;grid-template-columns:1fr 1fr;gap:12px}.option{background:#0f192b;border:1px solid var(--line);border-radius:13px;padding:17px;cursor:pointer;color:#dce6f3;text-align:left}.option:hover,.option.selected{border-color:var(--blue);background:#12243a}.field{width:100%;padding:16px;background:#0a1220;border:1px solid var(--line);border-radius:12px;color:white;font-size:15px;outline:none}.actions{display:flex;justify-content:space-between;margin-top:25px}.dashboard{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.score{font-size:58px;font-weight:900;color:var(--green)}.meter{height:11px;background:#18243a;border-radius:20px;overflow:hidden}.meter i{display:block;height:100%;width:68%;background:var(--green)}.tag{display:inline-block;padding:7px 10px;border-radius:20px;background:#15283a;color:#9eecc9;font-size:12px;margin:4px}.task{display:flex;gap:13px;padding:14px 0;border-bottom:1px solid var(--line)}.task b{display:block}.task small{color:var(--muted)}.dot{width:28px;height:28px;border-radius:50%;background:#17304a;color:var(--blue);display:grid;place-items:center;font-weight:900;flex:none}
+.alert{padding:15px;border-radius:12px;background:#251e13;border:1px solid #58401e;color:#ffd89c;line-height:1.5;margin:15px 0}.footer{padding:45px 0 20px;text-align:center;color:#61718a;font-size:12px}
+@media(max-width:800px){.grid,.options,.dashboard{grid-template-columns:1fr}.hero h1{font-size:42px}.app{padding:17px}}
+</style>
+</head>
+<body>
+<div class="app">
+<nav><div class="logo">AKV</div><div class="badge">AI REALITY-CHECK • PROTOTYPE</div></nav>
+
+<section id="home" class="screen active">
+<div class="hero">
+<div class="eyebrow">DON'T JUST DREAM. VALIDATE.</div>
+<h1>Turn your idea into a <span>real action plan.</span></h1>
+<p>AKV first understands your idea, skills, resources and real-world constraints. Then it identifies gaps, validation needs and the next steps — instead of blindly telling you that your idea is great.</p>
+<button class="btn" onclick="start()">Start Reality Check →</button>
+</div>
+<div class="grid">
+<div class="card"><h3>01 · Understand</h3><p>Structured questions about your idea, goals, skills, time, budget and team.</p></div>
+<div class="card"><h3>02 · Reality Check</h3><p>Separate assumptions from evidence and highlight what still needs validation.</p></div>
+<div class="card"><h3>03 · Execute</h3><p>Get a practical 7–30 day roadmap based on your current capability.</p></div>
+</div>
+</section>
+
+<section id="quiz" class="screen">
+<div class="topline"><div><div class="eyebrow">REALITY CHECK</div><h2 id="qtitle">Let's understand your idea</h2></div><span id="counter" class="badge">1 / 6</span></div>
+<div class="progress"><i id="bar"></i></div>
+<div class="card">
+<div id="qbox"></div>
+<div class="actions"><button class="btn secondary" onclick="prev()">← Back</button><button class="btn" onclick="next()">Continue →</button></div>
+</div>
+</section>
+
+<section id="result" class="screen">
+<div class="topline"><div><div class="eyebrow">AI ASSESSMENT</div><h2>Your Reality Check</h2></div><button class="btn secondary" onclick="location.reload()">New Assessment</button></div>
+<div class="dashboard">
+<div>
+<div class="card">
+<div style="color:var(--muted);font-size:13px">READINESS INDICATOR</div>
+<div class="score">68%</div>
+<div class="meter"><i></i></div>
+<p style="color:var(--muted);margin-top:12px">This is a prototype indicator, not a scientific score. It highlights evidence and missing information rather than pretending certainty.</p>
+<div><span class="tag">Problem clarity: Moderate</span><span class="tag">Founder readiness: Developing</span><span class="tag">Validation: Early</span></div>
+</div>
+<div class="card" style="margin-top:16px">
+<h3>What AKV found</h3>
+<div class="alert"><b>Reality check:</b> Your biggest risk is not the technology. You need stronger evidence that the target users have this problem frequently enough to use or pay for a solution.</div>
+<div class="task"><div class="dot">1</div><div><b>Interview 10 target users</b><small>Ask about their current workaround, frequency and pain.</small></div></div>
+<div class="task"><div class="dot">2</div><div><b>Build only the smallest prototype</b><small>Test the core workflow before adding advanced features.</small></div></div>
+<div class="task"><div class="dot">3</div><div><b>Run a 5-user usability test</b><small>Observe where users get confused and what they actually value.</small></div></div>
+</div>
+</div>
+<div>
+<div class="card"><h3>Capability Gap</h3>
+<p style="color:var(--muted)">Based on your answers, these are the areas to develop next.</p>
+<div style="margin-top:15px"><b>Product validation</b><div class="meter" style="margin:7px 0 16px"><i style="width:48%;background:var(--orange)"></i></div>
+<b>Technical execution</b><div class="meter" style="margin:7px 0 16px"><i style="width:32%;background:var(--red)"></i></div>
+<b>Problem research</b><div class="meter" style="margin:7px 0 16px"><i style="width:62%;background:var(--green)"></i></div></div>
+</div>
+<div class="card" style="margin-top:16px"><h3>Next 30 Days</h3><p>Week 1 → research & interviews</p><p>Week 2 → clickable MVP</p><p>Week 3 → user testing</p><p>Week 4 → improve + re-assess</p></div>
+</div>
+</div>
+<div class="footer">AKV Prototype • AI-assisted decision support • Evidence before confidence</div>
+</section>
+</div>
+
+<script>
+const qs=[
+{t:"What are you trying to build?",type:"text",ph:"Example: An AI platform that helps beginners validate and execute ideas"},
+{t:"Who has the problem you want to solve?",opts:["Students / beginners","Businesses","Creators / freelancers","Other specific users"]},
+{t:"How much have you validated the problem?",opts:["Only my own observation","Talked to a few people","Interviewed 10+ potential users","Already have active users"]},
+{t:"What resources do you currently have?",opts:["Solo + very limited budget","Small team + some budget","Team + technical resources","Established business/resources"]},
+{t:"How much time can you consistently give this?",opts:["< 1 hour/day","1–2 hours/day","2–4 hours/day","Full-time"]},
+{t:"What is your immediate goal?",opts:["Learn and explore","Build a prototype","Get first users","Turn it into a business"]}
+];
+let i=0,ans=[];
+function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function start(){show('quiz');render()}
+function render(){
+let q=qs[i]; document.getElementById('counter').textContent=(i+1)+" / "+qs.length;
+document.getElementById('bar').style.width=((i+1)/qs.length*100)+"%";
+let box=document.getElementById('qbox'); box.innerHTML='<div class="question">'+q.t+'</div>';
+if(q.type==='text'){box.innerHTML+='<input id="textans" class="field" placeholder="'+q.ph+'" value="'+(ans[i]||'')+'">'}
+else{let wrap=document.createElement('div');wrap.className='options';q.opts.forEach(o=>{let b=document.createElement('button');b.className='option'+(ans[i]===o?' selected':'');b.textContent=o;b.onclick=()=>{ans[i]=o;render()};wrap.appendChild(b)});box.appendChild(wrap)}
+}
+function next(){
+if(qs[i].type==='text'){let v=document.getElementById('textans').value.trim();if(!v){alert('Please enter your idea first.');return}ans[i]=v}
+else if(!ans[i]){alert('Select an option to continue.');return}
+if(i<qs.length-1){i++;render()}else show('result')
+}
+function prev(){if(i>0){i--;render()}else show('home')}
+</script>
+</body>
+</html>
